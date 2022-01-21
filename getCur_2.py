@@ -1,6 +1,17 @@
 import pandas as pd
+import os
 from datetime import datetime
 from sqlalchemy import create_engine, null
+from dotenv import load_dotenv
+load_dotenv()
+
+username=os.getenv("USERNAME")
+password=os.getenv("PASSWORD")
+domain=os.getenv("DOMAIN")
+port=os.getenv("PORT")
+database=os.getenv("DATABASE")
+encode=os.getenv("ENCODE")
+table=os.getenv("TABLE")
 
 
 url="https://portal.sw.nat.gov.tw/APGQO/GC331!downLoad?formBean.downLoadFile=CURRENT_JSON"
@@ -17,6 +28,6 @@ currency[u"cur_Date"]= datetime.now().strftime("%Y-%m-%d")
 
 currency[u"cur_Source"] = 'Portal'
 
-engine = create_engine("mysql+pymysql://{}:{}@{}:{}/{}?charset={}".format('root', 'Idct1688', 'c6002.myds.me', '6055', 'C6002_EIP_Test','utf8'))
+engine = create_engine("mysql+pymysql://{}:{}@{}:{}/{}?charset={}".format( username, password, domain, port, database,encode))
 con = engine.connect()
 currency.to_sql(name='currency', con=con, if_exists='append', index=False)
